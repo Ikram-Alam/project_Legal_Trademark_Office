@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model TrademarkApplication {
+  id                String   @id @default(cuid())
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  
+  // Trademark Information
+  trademarkName     String
+  trademarkType     String   // "name", "logo", "slogan", "combination"
+  description       String
+  jurisdiction      String   // "US", "CA", "EU", "UK"
+  logoFile          String?  // File path or URL
+  trademarkClass    String   // International classification
+  
+  // Basic Details
+  firstName         String
+  lastName          String
+  email             String
+  phone             String
+  companyName       String?
+  address           String
+  city              String
+  state             String
+  zipCode           String
+  country           String
+  
+  // Package Selection
+  packageType       String   // "basic", "standard", "premium"
+  packagePrice      Decimal
+  governmentFee     Decimal
+  totalAmount       Decimal
+  
+  // Payment Information
+  paymentStatus     String   @default("pending") // "pending", "completed", "failed"
+  paymentId         String?  // Stripe payment ID
+  paymentMethod     String?  // "stripe", "paypal"
+  
+  // Application Status
+  status            String   @default("submitted") // "submitted", "under_review", "approved", "rejected", "completed"
+  notes             String?
+  
+  @@map("trademark_applications")
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String   // This will be hashed
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("admins")
+}

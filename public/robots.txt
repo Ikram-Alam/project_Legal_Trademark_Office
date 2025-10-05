@@ -1,0 +1,23 @@
+# Legal Trademark Office - Robots.txt
+
+User-agent: *
+Allow: /
+
+# Allow all bots to access the sitemap
+Sitemap: https://legaltrademarkoffice.com/sitemap.xml
+
+# Disallow admin areas
+Disallow: /admin/
+Disallow: /api/auth/
+Disallow: /api/admin/
+
+# Allow important pages
+Allow: /
+Allow: /services/
+Allow: /about
+Allow: /contact
+Allow: /faq
+Allow: /register
+
+# Crawl delay for respectful crawling
+Crawl-delay: 1
