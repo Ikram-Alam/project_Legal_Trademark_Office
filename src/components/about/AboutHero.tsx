@@ -1,7 +1,3 @@
-import { Button } from "@/components/ui/button"
-import { ArrowRight } from "lucide-react"
-import Link from "next/link"
-
 interface StatsItem {
   value: string
   label: string

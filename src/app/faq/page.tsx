@@ -7,7 +7,6 @@ import { Search, RefreshCw, MessageCircle } from "lucide-react"
 import PageHero from "@/components/shared/PageHero"
 import FAQSearch from "@/components/faq/FAQSearch"
 import FAQItem from "@/components/faq/FAQItem"
-import ContactCTA from "@/components/faq/ContactCTA"
 import { faqsData, faqCategories } from "@/data/faq"
 
 // Inline Badge component to avoid import issues

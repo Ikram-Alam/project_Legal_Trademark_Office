@@ -1,6 +1,6 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { AlertTriangle, Calendar, Clock, Shield, Lock, Star, Users, ArrowRight, CheckCircle, Award, Zap } from "lucide-react"
+import { AlertTriangle, Calendar, Clock, Shield, Lock, Star, Users, ArrowRight, CheckCircle } from "lucide-react"
 import Link from "next/link"
 import PageHero from "@/components/shared/PageHero"
 import PricingPackages from "@/components/services/PricingPackages"
