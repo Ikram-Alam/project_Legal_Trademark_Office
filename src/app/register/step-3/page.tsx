@@ -8,6 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
+import PayPalButton from "@/components/PayPalButton"
 import { 
   ArrowLeft, 
   Check, 
@@ -20,7 +21,6 @@ import {
   Users,
   Phone,
   Mail,
-  Globe,
   AlertTriangle,
   CheckCircle,
   Zap,
@@ -88,21 +88,69 @@ export default function Step3Page() {
   const [acceptTerms, setAcceptTerms] = useState(false)
   const [acceptPrivacy, setAcceptPrivacy] = useState(false)
   const [newsletterSignup, setNewsletterSignup] = useState(true)
-  const [paymentMethod, setPaymentMethod] = useState("credit")
-  const [isProcessing, setIsProcessing] = useState(false)
 
   useEffect(() => {
-    // Load previous steps data
-    const step1 = localStorage.getItem('trademarkStep1')
-    const step2 = localStorage.getItem('trademarkStep2')
-    
-    if (!step1 || !step2) {
-      router.push('/register/step-1')
-      return
+    // Load application data from database
+    const loadApplicationData = async () => {
+      const applicationId = localStorage.getItem('applicationId')
+      
+      if (!applicationId) {
+        router.push('/register/step-1')
+        return
+      }
+
+      try {
+        const response = await fetch(`/api/registration/${applicationId}`)
+        const result = await response.json()
+
+        if (result.success && result.application) {
+          const app = result.application
+          
+          // Convert to step data format for compatibility
+          setStep1Data({
+            trademarkName: app.trademarkName || '',
+            slogan: app.slogan || '',
+            trademarkType: app.trademarkType || '',
+            logoFile: app.logoFile ? new File([], app.logoFile) : undefined,
+            businessCategories: [],
+            useInCommerce: app.useInCommerce || '',
+            firstUseDate: app.firstUseDate?.split('T')[0] || '',
+            firstCommercialUseDate: app.commerceUseDate?.split('T')[0] || '',
+            searchResults: []
+          })
+
+          setStep2Data({
+            applicantType: app.applicantType || 'individual',
+            firstName: app.firstName || '',
+            lastName: app.lastName || '',
+            email: app.email || '',
+            phone: app.phone || '',
+            address: app.address || '',
+            city: app.city || '',
+            state: app.state || '',
+            zipCode: app.zipCode || '',
+            country: app.country || '',
+            organizationName: app.organizationName || '',
+            organizationType: app.organizationType || '',
+            contactPerson: app.contactPerson || '',
+            organizationEmail: app.organizationEmail || '',
+            organizationPhone: app.organizationPhone || '',
+            organizationAddress: app.organizationAddress || '',
+            organizationCity: app.organizationCity || '',
+            organizationState: app.organizationState || '',
+            organizationZipCode: app.organizationZipCode || '',
+            organizationCountry: app.organizationCountry || ''
+          })
+        } else {
+          router.push('/register/step-1')
+        }
+      } catch (error) {
+        console.error('Error loading application data:', error)
+        router.push('/register/step-1')
+      }
     }
 
-    setStep1Data(JSON.parse(step1))
-    setStep2Data(JSON.parse(step2))
+    loadApplicationData()
   }, [router])
 
   const packages = [
@@ -205,43 +253,6 @@ export default function Step3Page() {
     const discountAmount = subtotal * discount
     return subtotal - discountAmount
   }
-
-  const handlePayment = async () => {
-    if (!acceptTerms || !acceptPrivacy) {
-      alert('Please accept the terms and privacy policy to continue.')
-      return
-    }
-
-    setIsProcessing(true)
-    
-    try {
-      // Save payment selection
-      const paymentData = {
-        package: selectedPackage,
-        originalAmount: selectedPkg?.totalPrice,
-        discount: discount,
-        finalAmount: calculateTotal(),
-        promoCode: promoCode,
-        paymentMethod: paymentMethod,
-        timestamp: new Date().toISOString(),
-        newsletterSignup: newsletterSignup
-      }
-      localStorage.setItem('trademarkStep3', JSON.stringify(paymentData))
-      
-      // Simulate payment processing
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      // For now, just show success message (will integrate with Stripe later)
-      router.push('/register/success')
-    } catch (error) {
-      console.error('Payment error:', error)
-      alert('Payment processing failed. Please try again.')
-    } finally {
-      setIsProcessing(false)
-    }
-  }
-
-  const isFormValid = acceptTerms && acceptPrivacy
 
   if (!step1Data || !step2Data) {
     return (
@@ -514,51 +525,6 @@ export default function Step3Page() {
                 </CardDescription>
               </CardHeader>
               <CardContent className="p-6 space-y-6">
-                {/* Development Notice */}
-                <div className="bg-gradient-to-r from-yellow-50 to-orange-50 border border-yellow-200 rounded-lg p-4">
-                  <div className="flex items-start">
-                    <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
-                      <AlertTriangle className="w-4 h-4 text-yellow-600" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-yellow-800">Development Preview Mode</h4>
-                      <p className="text-sm text-yellow-700 mt-1">
-                        Secure payment integration with Stripe will be implemented in the production version. 
-                        This preview demonstrates the complete payment flow and user experience.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Payment Method Selection */}
-                <div className="space-y-4">
-                  <Label className="text-lg font-semibold text-gray-800">Payment Method</Label>
-                  <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl hover:border-purple-400 transition-colors">
-                        <RadioGroupItem value="credit" id="credit" />
-                        <Label htmlFor="credit" className="cursor-pointer flex items-center flex-1">
-                          <CreditCard className="w-5 h-5 mr-3 text-purple-600" />
-                          <div>
-                            <div className="font-medium">Credit/Debit Card</div>
-                            <div className="text-sm text-gray-600">Visa, MasterCard, American Express</div>
-                          </div>
-                        </Label>
-                      </div>
-                      <div className="flex items-center space-x-3 p-4 border-2 border-gray-200 rounded-xl hover:border-purple-400 transition-colors">
-                        <RadioGroupItem value="paypal" id="paypal" />
-                        <Label htmlFor="paypal" className="cursor-pointer flex items-center flex-1">
-                          <Globe className="w-5 h-5 mr-3 text-purple-600" />
-                          <div>
-                            <div className="font-medium">PayPal</div>
-                            <div className="text-sm text-gray-600">Pay with your PayPal account</div>
-                          </div>
-                        </Label>
-                      </div>
-                    </div>
-                  </RadioGroup>
-                </div>
-
                 {/* Promo Code Section */}
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-lg p-4 border border-green-200">
                   <Label className="font-semibold text-gray-700 flex items-center mb-3">
@@ -588,39 +554,61 @@ export default function Step3Page() {
                   )}
                 </div>
 
-                {/* Mock Payment Form */}
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label className="font-medium text-gray-700">Card Number</Label>
-                      <div className="mt-2 p-3 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-500 flex items-center">
-                        <CreditCard className="w-4 h-4 mr-2" />
-                        •••• •••• •••• ••••
-                      </div>
-                    </div>
-                    <div>
-                      <Label className="font-medium text-gray-700">Expiry Date</Label>
-                      <div className="mt-2 p-3 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-500">
-                        MM/YY
+                {/* PayPal Payment Integration */}
+                {acceptTerms && acceptPrivacy ? (
+                  <div className="space-y-4">
+                    <PayPalButton
+                      amount={calculateTotal()}
+                      applicationId={localStorage.getItem('applicationId') || ''}
+                      packageType={selectedPkg?.name || selectedPackage}
+                      onSuccess={(details) => {
+                        console.log('Payment successful:', details)
+                        // Clear localStorage
+                        localStorage.removeItem('applicationId')
+                        localStorage.removeItem('trademarkStep1')
+                        localStorage.removeItem('trademarkStep2')
+                        localStorage.removeItem('trademarkStep3')
+                        
+                        router.push('/register/success')
+                      }}
+                      onError={(error) => {
+                        console.error('Payment error:', error)
+                        const message = error instanceof Error ? error.message : String(error)
+                        alert(`Payment failed: ${message}. Please try again.`)
+                      }}
+                      onCancel={() => {
+                        console.log('Payment cancelled by user')
+                      }}
+                    />
+                    
+                    {/* Development Notice */}
+                    <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
+                      <div className="flex items-start">
+                        <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                          <AlertTriangle className="w-4 h-4 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-blue-800">Development Mode</h4>
+                          <p className="text-sm text-blue-700 mt-1">
+                            This demonstrates the complete payment flow. To process real payments, configure PayPal credentials in your environment variables.
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
-                    <div>
-                      <Label className="font-medium text-gray-700">CVV</Label>
-                      <div className="mt-2 p-3 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-500">
-                        •••
-                      </div>
-                    </div>
-                    <div>
-                      <Label className="font-medium text-gray-700">ZIP Code</Label>
-                      <div className="mt-2 p-3 border-2 border-gray-200 rounded-lg bg-gray-50 text-gray-500">
-                        {(step2Data?.zipCode || step2Data?.organizationZipCode) || '•••••'}
+                ) : (
+                  <div className="bg-gradient-to-r from-orange-50 to-red-50 border border-orange-200 rounded-lg p-4">
+                    <div className="flex items-center text-orange-800">
+                      <AlertTriangle className="w-5 h-5 mr-2" />
+                      <div>
+                        <h4 className="font-semibold">Accept Terms to Continue</h4>
+                        <p className="text-sm text-orange-700 mt-1">
+                          Please accept the terms of service and privacy policy to proceed with payment.
+                        </p>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
 
                 {/* Security Features */}
                 <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-4">
@@ -843,32 +831,6 @@ export default function Step3Page() {
                 </p>
               </CardContent>
             </Card>
-
-            {/* Enhanced Payment Button */}
-            <Button 
-              onClick={handlePayment}
-              disabled={!isFormValid || isProcessing}
-              className="w-full py-4 text-lg font-semibold bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 disabled:from-gray-400 disabled:to-gray-500 shadow-lg hover:shadow-xl transition-all duration-300"
-              size="lg"
-            >
-              {isProcessing ? (
-                <div className="flex items-center">
-                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Processing Payment...
-                </div>
-              ) : (
-                <div className="flex items-center">
-                  <Lock className="w-5 h-5 mr-2" />
-                  Complete Secure Payment - ${calculateTotal()}
-                </div>
-              )}
-            </Button>
-            
-            {!isFormValid && (
-              <p className="text-xs text-red-600 text-center">
-                Please accept the terms and privacy policy to continue
-              </p>
-            )}
           </div>
         </div>
 

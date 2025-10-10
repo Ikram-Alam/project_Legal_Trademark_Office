@@ -20,9 +20,13 @@ import {
   Users,
   Sparkles,
   Heart,
-  Home
+  Home,
+  X,
+  Send
 } from "lucide-react"
 
+// Application data interface (for future use)
+/*
 interface ApplicationData {
   step1?: {
     trademarkName?: string
@@ -46,42 +50,55 @@ interface ApplicationData {
     paymentMethod?: string
   }
 }
+*/
 
 export default function SuccessPage() {
   const router = useRouter()
-  const [applicationData, setApplicationData] = useState<ApplicationData>({})
+  // const [applicationData, setApplicationData] = useState<ApplicationData>({})
   const [applicationId] = useState(() => 
     'TM-' + Date.now().toString().slice(-6) + Math.random().toString(36).substring(2, 8).toUpperCase()
   )
+  
+  // Modal states
+  const [showDownloadModal, setShowDownloadModal] = useState(false)
+  const [showTrackModal, setShowTrackModal] = useState(false)
+  const [showReviewModal, setShowReviewModal] = useState(false)
+  const [reviewText, setReviewText] = useState('')
+  const [reviewSubmitted, setReviewSubmitted] = useState(false)
 
   useEffect(() => {
-    // Load all application data
-    const step1 = localStorage.getItem('trademarkStep1')
-    const step2 = localStorage.getItem('trademarkStep2')
-    const step3 = localStorage.getItem('trademarkStep3')
-
-    setApplicationData({
-      step1: step1 ? JSON.parse(step1) : null,
-      step2: step2 ? JSON.parse(step2) : null,
-      step3: step3 ? JSON.parse(step3) : null
-    })
+    // Application data loading is handled by the PayPal success flow
+    // No need to load localStorage data here since payment completion
+    // already updates the database with final application status
   }, [])
 
   const handleDownloadReceipt = () => {
-    // Generate a simple receipt (in real app, this would generate a PDF)
-    const receiptData = {
-      applicationId,
-      timestamp: new Date().toISOString(),
-      ...applicationData
-    }
-    
-    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(receiptData, null, 2))
-    const downloadAnchor = document.createElement('a')
-    downloadAnchor.setAttribute("href", dataStr)
-    downloadAnchor.setAttribute("download", `trademark-application-${applicationId}.json`)
-    document.body.appendChild(downloadAnchor)
-    downloadAnchor.click()
-    downloadAnchor.remove()
+    setShowDownloadModal(true)
+  }
+
+  const handleTrackApplication = () => {
+    setShowTrackModal(true)
+  }
+
+  const handleReview = () => {
+    setShowReviewModal(true)
+  }
+
+  const handleSubmitReview = () => {
+    setReviewSubmitted(true)
+    setTimeout(() => {
+      setShowReviewModal(false)
+      setReviewSubmitted(false)
+      setReviewText('')
+    }, 2000)
+  }
+
+  const closeModal = () => {
+    setShowDownloadModal(false)
+    setShowTrackModal(false)
+    setShowReviewModal(false)
+    setReviewText('')
+    setReviewSubmitted(false)
   }
 
   const clearApplicationData = () => {
@@ -312,6 +329,7 @@ export default function SuccessPage() {
               <p className="text-sm text-gray-600 mb-4">Monitor your application status online</p>
               <Button 
                 variant="outline"
+                onClick={handleTrackApplication}
                 className="w-full border-blue-200 text-blue-700 hover:bg-blue-50"
               >
                 <FileText className="w-4 h-4 mr-2" />
@@ -329,6 +347,7 @@ export default function SuccessPage() {
               <p className="text-sm text-gray-600 mb-4">Share your experience with others</p>
               <Button 
                 variant="outline"
+                onClick={handleReview}
                 className="w-full border-purple-200 text-purple-700 hover:bg-purple-50"
               >
                 <Star className="w-4 h-4 mr-2" />
@@ -393,6 +412,124 @@ export default function SuccessPage() {
             </div>
           </div>
         </div>
+
+        {/* Download Modal */}
+        {showDownloadModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 relative">
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Mail className="w-8 h-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Receipt Sent!</h3>
+                <p className="text-gray-600 mb-6">
+                  Your application receipt will be sent to your registered email address within the next few minutes.
+                </p>
+                <Button 
+                  onClick={closeModal}
+                  className="w-full bg-green-600 hover:bg-green-700"
+                >
+                  Got it!
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Track Modal */}
+        {showTrackModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 relative">
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div className="text-center">
+                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Clock className="w-8 h-8 text-blue-600" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Coming Soon!</h3>
+                <p className="text-gray-600 mb-6">
+                  The application tracking feature is currently under development. You will receive email updates about your application status.
+                </p>
+                <Button 
+                  onClick={closeModal}
+                  className="w-full bg-blue-600 hover:bg-blue-700"
+                >
+                  Understood
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Review Modal */}
+        {showReviewModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4 relative">
+              <button
+                onClick={closeModal}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+              <div className="text-center">
+                {!reviewSubmitted ? (
+                  <>
+                    <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Star className="w-8 h-8 text-purple-600" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Write a Review</h3>
+                    <p className="text-gray-600 mb-4">
+                      Share your experience with our trademark registration service
+                    </p>
+                    <textarea
+                      value={reviewText}
+                      onChange={(e) => setReviewText(e.target.value)}
+                      placeholder="Tell us about your experience..."
+                      className="w-full p-3 border border-gray-300 rounded-lg resize-none h-32 mb-4 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    />
+                    <div className="flex gap-3">
+                      <Button 
+                        onClick={closeModal}
+                        variant="outline"
+                        className="flex-1"
+                      >
+                        Cancel
+                      </Button>
+                      <Button 
+                        onClick={handleSubmitReview}
+                        disabled={!reviewText.trim()}
+                        className="flex-1 bg-purple-600 hover:bg-purple-700 disabled:opacity-50"
+                      >
+                        <Send className="w-4 h-4 mr-2" />
+                        Send
+                      </Button>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <CheckCircle className="w-8 h-8 text-green-600" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">Thank You!</h3>
+                    <p className="text-gray-600 mb-4">
+                      Thanks for your feedback! Your review helps us improve our services.
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   )

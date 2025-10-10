@@ -625,9 +625,10 @@ export default function Step2Page() {
   })
 
   useEffect(() => {
-    // Load step 1 data if available
-    const step1Data = localStorage.getItem('trademarkStep1')
-    if (!step1Data) {
+    // Check if we have an application ID from step 1
+    const applicationId = localStorage.getItem('applicationId')
+    if (!applicationId) {
+      // If no application ID, redirect to step 1
       router.push('/register/step-1')
     }
   }, [router])
@@ -636,10 +637,40 @@ export default function Step2Page() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const handleNext = () => {
-    // Save to localStorage for now (will be database later)
-    localStorage.setItem('trademarkStep2', JSON.stringify(formData))
-    router.push('/register/step-3')
+  const handleNext = async () => {
+    try {
+      const applicationId = localStorage.getItem('applicationId')
+      
+      if (!applicationId) {
+        alert('Application ID not found. Please start from step 1.')
+        router.push('/register/step-1')
+        return
+      }
+
+      const response = await fetch('/api/registration/step2', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...formData,
+          applicationId
+        }),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        localStorage.removeItem('trademarkStep2') // Remove old localStorage data
+        router.push('/register/step-3')
+      } else {
+        console.error('Failed to save step 2 data:', result.error)
+        alert('Failed to save data. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error saving step 2 data:', error)
+      alert('Failed to save data. Please try again.')
+    }
   }
 
   const isFormValid = () => {

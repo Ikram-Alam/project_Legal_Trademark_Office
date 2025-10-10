@@ -6,12 +6,11 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 model TrademarkApplication {
@@ -19,39 +18,87 @@ model TrademarkApplication {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   
-  // Trademark Information
-  trademarkName     String
-  trademarkType     String   // "name", "logo", "slogan", "combination"
-  description       String
-  jurisdiction      String   // "US", "CA", "EU", "UK"
+  // Application Progress
+  currentStep       Int      @default(1) // 1, 2, 3
+  status            String   @default("draft") // "draft", "submitted", "under_review", "approved", "rejected", "completed"
+  
+  // Step 1: Trademark Information
+  trademarkName     String?
+  slogan            String?
+  description       String?
+  trademarkType     String?  // "word", "logo", "combined"
   logoFile          String?  // File path or URL
-  trademarkClass    String   // International classification
+  internationalClass String?
+  useInCommerce     String?  // "intent", "current"
+  firstUseDate      DateTime?
+  commerceUseDate   DateTime?
+  disclaimerText    String?
+  translationRequired Boolean @default(false)
+  translationText   String?
+  significanceExplanation String?
+  businessEntityType String?
+  searchPerformed   Boolean @default(false)
+  conflictsFound    Boolean @default(false)
   
-  // Basic Details
-  firstName         String
-  lastName          String
-  email             String
-  phone             String
-  companyName       String?
-  address           String
-  city              String
-  state             String
-  zipCode           String
-  country           String
+  // Step 2: Applicant Information
+  applicantType     String?  // "individual", "organization"
   
-  // Package Selection
-  packageType       String   // "basic", "standard", "premium"
-  packagePrice      Decimal
-  governmentFee     Decimal
-  totalAmount       Decimal
+  // Individual fields
+  firstName         String?
+  lastName          String?
+  email             String?
+  phone             String?
+  address           String?
+  city              String?
+  state             String?
+  zipCode           String?
+  country           String?
+  citizenshipCountry String?
+  domiciledInUS     Boolean @default(true)
+  
+  // Organization fields
+  organizationName  String?
+  organizationType  String?
+  contactPerson     String?
+  organizationEmail String?
+  organizationPhone String?
+  organizationAddress String?
+  organizationCity  String?
+  organizationState String?
+  organizationZipCode String?
+  organizationCountry String?
+  businessFormationState String?
+  taxId             String?
+  
+  // Attorney Information
+  attorneyDesignation String? // "yes", "no"
+  attorneyName      String?
+  attorneyEmail     String?
+  attorneyPhone     String?
+  
+  // Communication Preferences
+  correspondencePreference String? // "email", "mail"
+  signatureMethod   String? // "electronic", "handwritten"
+  emergencyContact  String?
+  emergencyPhone    String?
+  
+  // Step 3: Package Selection & Payment
+  packageType       String?  // "basic", "standard", "premium"
+  packagePrice      Decimal?
+  governmentFee     Decimal?
+  discount          Decimal? @default(0)
+  promoCode         String?
+  totalAmount       Decimal?
   
   // Payment Information
-  paymentStatus     String   @default("pending") // "pending", "completed", "failed"
+  paymentStatus     String   @default("pending") // "pending", "processing", "completed", "failed"
   paymentId         String?  // Stripe payment ID
   paymentMethod     String?  // "stripe", "paypal"
+  paymentIntentId   String?  // Stripe payment intent
   
-  // Application Status
-  status            String   @default("submitted") // "submitted", "under_review", "approved", "rejected", "completed"
+  // Application Processing
+  submissionDate    DateTime?
+  usto_applicationNumber String? @unique
   notes             String?
   
   @@map("trademark_applications")

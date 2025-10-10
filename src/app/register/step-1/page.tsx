@@ -15,11 +15,12 @@ export default function Step1Page() {
   const router = useRouter()
   const [formData, setFormData] = useState({
     trademarkName: "",
-    slogan: "",
     description: "",
     trademarkType: "word",
     categories: [],
     logoFile: null as File | null,
+    logoUrl: "", // Store the uploaded file URL
+    sloganText: "", // for slogan trademark type
     internationalClass: "",
     searchPerformed: false,
     conflictsFound: false,
@@ -47,9 +48,31 @@ export default function Step1Page() {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
-  const handleFileUpload = (file: File) => {
+  const handleFileUpload = async (file: File) => {
     if (file.type.startsWith('image/')) {
-      setFormData(prev => ({ ...prev, logoFile: file }))
+      try {
+        const formData = new FormData()
+        formData.append('file', file)
+        
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData
+        })
+        
+        const result = await response.json()
+        
+        if (result.success) {
+          setFormData(prev => ({ 
+            ...prev, 
+            logoFile: file,
+            logoUrl: result.url // Store the URL for later use
+          }))
+        } else {
+          console.error('Upload failed:', result.error)
+        }
+      } catch (error) {
+        console.error('Upload error:', error)
+      }
     }
   }
 
@@ -88,39 +111,89 @@ export default function Step1Page() {
     }
   }
 
-  const handleNext = () => {
-    // Save to localStorage for now (will be database later)
-    localStorage.setItem('trademarkStep1', JSON.stringify(formData))
-    router.push('/register/step-2')
+  const handleNext = async () => {
+    try {
+      // Prepare data for API (exclude File object)
+      const apiData = {
+        ...formData,
+        logoFile: null, // Remove the File object
+        logoPath: formData.logoUrl, // Send the uploaded file URL/path
+      }
+
+      const response = await fetch('/api/registration/step1', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(apiData),
+      })
+
+      const result = await response.json()
+
+      if (result.success) {
+        // Store application ID for next steps
+        localStorage.setItem('applicationId', result.applicationId)
+        localStorage.removeItem('trademarkStep1') // Remove old localStorage data
+        router.push('/register/step-2')
+      } else {
+        console.error('Failed to save step 1 data:', result.error)
+        // Show error message to user
+        alert('Failed to save data. Please try again.')
+      }
+    } catch (error) {
+      console.error('Error saving step 1 data:', error)
+      alert('Failed to save data. Please try again.')
+    }
   }
 
-  const categories = [
-    "Advertising and business",
-    "Chemical products",
-    "Cosmetics and cleaning preparations",
-    "Hand tools and metal goods",
-    "Machinery and electrical goods",
-    "Vehicles",
-    "Firearms, fireworks, and jewelry",
-    "Musical instruments",
-    "Paper goods and printed matter",
-    "Rubber and plastic goods",
-    "Household and kitchen items",
-    "Ropes, canvas, and textile goods",
-    "Clothing",
-    "Floor coverings",
-    "Toys and sporting goods",
-    "Food and beverages",
-    "Light bulbs and fuel",
-    "Building materials",
-    "Medical and veterinary goods",
-    "Transportation and storage",
-    "Treatment of materials",
-    "Education and entertainment",
-    "Technology services",
-    "Hotels and restaurants",
-    "Legal and security services"
-  ]
+    const categories = [
+      "Chemicals",
+      "Paints",
+      "Cosmetics and cleaning products",
+      "Industrial oils and greases; fuels and candles",
+      "Pharmaceuticals and medical preparations",
+      "Common metals and metal building materials",
+      "Machines and machine tools",
+      "Hand tools and implements (hand-operated)",
+      "Scientific, photographic, electronic and software products",
+      "Medical and veterinary apparatus and instruments",
+      "Lighting, heating, cooking and refrigeration apparatus",
+      "Vehicles and conveyances",
+      "Firearms, ammunition, explosives, fireworks",
+      "Precious metals, jewelry, and watches",
+      "Musical instruments",
+      "Paper goods and printed materials",
+      "Rubber, plastics, and insulating materials",
+      "Leather and imitations of leather; bags and luggage",
+      "Non-metal building materials",
+      "Furniture and furnishings",
+      "Household or kitchen utensils and containers",
+      "Ropes, nets, tents, and raw textile fibers",
+      "Yarns and threads for textile use",
+      "Textiles and textile goods",
+      "Clothing, footwear, headgear",
+      "Lace, ribbons, buttons, zippers, and artificial flowers",
+      "Carpets, rugs, mats, and floor coverings",
+      "Games, toys, and sporting goods",
+      "Meat, fish, poultry, dairy, and food products of animal origin",
+      "Coffee, tea, cocoa, sugar, rice, bread, and condiments",
+      "Agricultural, horticultural, and forestry products; fresh fruits and vegetables",
+      "Beers and non-alcoholic beverages",
+      "Alcoholic beverages (except beers)",
+      "Tobacco, cigars, cigarettes, and smoking accessories",
+      "Advertising, business management, and retail services",
+      "Financial, insurance, and real estate services",
+      "Construction, repair, and installation services",
+      "Telecommunications services",
+      "Transport, packaging, and storage of goods; travel arrangement",
+      "Treatment of materials and manufacturing services",
+      "Education, training, entertainment, and cultural activities",
+      "Scientific and technological services; software and IT development",
+      "Food, drink, and temporary accommodation (restaurants, hotels)",
+      "Medical, veterinary, and beauty care services",
+      "Legal, security, and personal services"
+    ];
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-8 relative overflow-hidden">
@@ -228,22 +301,22 @@ export default function Step1Page() {
                       <div className="flex items-center space-x-3 p-4 border-2 border-purple-200 rounded-xl hover:border-purple-400 transition-colors">
                         <RadioGroupItem value="word" id="word" />
                         <Label htmlFor="word" className="flex-1 cursor-pointer">
-                          <div className="font-medium">Word Mark</div>
-                          <div className="text-sm text-gray-600">Text only</div>
+                          <div className="font-medium">Trademark Name</div>
+                          <div className="text-sm text-gray-600">Business/Brand name only</div>
                         </Label>
                       </div>
                       <div className="flex items-center space-x-3 p-4 border-2 border-purple-200 rounded-xl hover:border-purple-400 transition-colors">
                         <RadioGroupItem value="logo" id="logo" />
                         <Label htmlFor="logo" className="flex-1 cursor-pointer">
-                          <div className="font-medium">Design Mark</div>
-                          <div className="text-sm text-gray-600">Logo/Symbol only</div>
+                          <div className="font-medium">Logo</div>
+                          <div className="text-sm text-gray-600">Design/Symbol only</div>
                         </Label>
                       </div>
                       <div className="flex items-center space-x-3 p-4 border-2 border-purple-200 rounded-xl hover:border-purple-400 transition-colors">
-                        <RadioGroupItem value="combined" id="combined" />
-                        <Label htmlFor="combined" className="flex-1 cursor-pointer">
-                          <div className="font-medium">Combined Mark</div>
-                          <div className="text-sm text-gray-600">Text + Logo</div>
+                        <RadioGroupItem value="slogan" id="slogan" />
+                        <Label htmlFor="slogan" className="flex-1 cursor-pointer">
+                          <div className="font-medium">Slogan</div>
+                          <div className="text-sm text-gray-600">Tagline/Catchphrase</div>
                         </Label>
                       </div>
                     </div>
@@ -251,7 +324,7 @@ export default function Step1Page() {
                 </div>
 
                 {/* Logo Upload */}
-                {(formData.trademarkType === 'logo' || formData.trademarkType === 'combined') && (
+                {formData.trademarkType === 'logo' && (
                   <div className="bg-gradient-to-r from-orange-50 to-red-50 rounded-xl p-6 border border-orange-200">
                     <Label className="text-lg font-semibold text-gray-800">Upload Logo/Design *</Label>
                     <div
@@ -314,6 +387,23 @@ export default function Step1Page() {
                   </div>
                 )}
 
+                {/* Slogan Input */}
+                {formData.trademarkType === 'slogan' && (
+                  <div className="bg-gradient-to-r from-yellow-50 to-amber-50 rounded-xl p-6 border border-yellow-200">
+                    <Label htmlFor="sloganText" className="text-lg font-semibold text-gray-800">Slogan/Tagline *</Label>
+                    <Input
+                      id="sloganText"
+                      placeholder="Enter your slogan or tagline"
+                      value={formData.sloganText}
+                      onChange={(e) => handleInputChange('sloganText', e.target.value)}
+                      className="mt-3 border-yellow-200 focus:border-yellow-500"
+                    />
+                    <p className="text-sm text-gray-600 mt-2">
+                      Enter the exact slogan or tagline you want to trademark
+                    </p>
+                  </div>
+                )}
+
                 {/* Use in Commerce */}
                 <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border border-green-200">
                   <Label className="text-lg font-semibold text-gray-800">Use in Commerce *</Label>
@@ -369,21 +459,6 @@ export default function Step1Page() {
                       </div>
                     </div>
                   )}
-                </div>
-
-                {/* Slogan */}
-                <div>
-                  <Label htmlFor="slogan" className="text-lg font-semibold text-gray-800">Slogan/Tagline (Optional)</Label>
-                  <Input
-                    id="slogan"
-                    placeholder="Enter your slogan or tagline"
-                    value={formData.slogan}
-                    onChange={(e) => handleInputChange('slogan', e.target.value)}
-                    className="mt-3 border-gray-200 focus:border-blue-500"
-                  />
-                  <p className="text-sm text-gray-500 mt-1">
-                    Include any slogan or tagline you want to protect with your trademark
-                  </p>
                 </div>
 
                 {/* Description */}
