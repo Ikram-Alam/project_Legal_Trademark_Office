@@ -58,6 +58,8 @@ export default function SuccessPage() {
   const [applicationId] = useState(() => 
     'TM-' + Date.now().toString().slice(-6) + Math.random().toString(36).substring(2, 8).toUpperCase()
   )
+  const [isVerifying, setIsVerifying] = useState(true)
+  const [verificationError, setVerificationError] = useState<string | null>(null)
   
   // Modal states
   const [showDownloadModal, setShowDownloadModal] = useState(false)
@@ -67,9 +69,53 @@ export default function SuccessPage() {
   const [reviewSubmitted, setReviewSubmitted] = useState(false)
 
   useEffect(() => {
-    // Application data loading is handled by the PayPal success flow
-    // No need to load localStorage data here since payment completion
-    // already updates the database with final application status
+    // Verify Payoneer payment when returning from checkout
+    const verifyPayoneerPayment = async () => {
+      try {
+        // Get session_id from URL query parameters
+        const urlParams = new URLSearchParams(window.location.search)
+        const sessionId = urlParams.get('session_id')
+        const storedApplicationId = localStorage.getItem('applicationId')
+
+        if (!sessionId || !storedApplicationId) {
+          console.log('No payment verification needed')
+          setIsVerifying(false)
+          return
+        }
+
+        // Verify payment with backend
+        const response = await fetch('/api/payoneer/verify-payment', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            sessionId,
+            applicationId: storedApplicationId
+          })
+        })
+
+        const result = await response.json()
+
+        if (result.success) {
+          console.log('Payment verified successfully:', result)
+          // Clear localStorage after successful verification
+          localStorage.removeItem('applicationId')
+          localStorage.removeItem('trademarkStep1')
+          localStorage.removeItem('trademarkStep2')
+          localStorage.removeItem('trademarkStep3')
+          setIsVerifying(false)
+        } else {
+          throw new Error(result.error || 'Payment verification failed')
+        }
+      } catch (error) {
+        console.error('Payment verification error:', error)
+        setVerificationError(error instanceof Error ? error.message : 'Verification failed')
+        setIsVerifying(false)
+      }
+    }
+
+    verifyPayoneerPayment()
   }, [])
 
   const handleDownloadReceipt = () => {
@@ -106,6 +152,50 @@ export default function SuccessPage() {
     localStorage.removeItem('trademarkStep2')
     localStorage.removeItem('trademarkStep3')
     router.push('/')
+  }
+
+  // Show verification status
+  if (isVerifying) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle className="text-center">Verifying Payment...</CardTitle>
+            <CardDescription className="text-center">
+              Please wait while we confirm your payment
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center py-8">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-blue-600 mx-auto mb-4"></div>
+            <p className="text-sm text-gray-600">This will only take a moment</p>
+          </CardContent>
+        </Card>
+      </div>
+    )
+  }
+
+  if (verificationError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-red-50 to-pink-50">
+        <Card className="w-full max-w-md border-red-200">
+          <CardHeader>
+            <CardTitle className="text-center text-red-600">Payment Verification Failed</CardTitle>
+            <CardDescription className="text-center">
+              There was an issue verifying your payment
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="text-center py-8">
+            <div className="text-red-500 mb-4">
+              <X className="w-16 h-16 mx-auto" />
+            </div>
+            <p className="text-sm text-gray-700 mb-6">{verificationError}</p>
+            <Button onClick={() => router.push('/register/step-3')} className="w-full">
+              Return to Payment
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
+    )
   }
 
   return (

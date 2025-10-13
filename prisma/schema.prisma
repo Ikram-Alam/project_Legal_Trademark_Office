@@ -92,9 +92,11 @@ model TrademarkApplication {
   
   // Payment Information
   paymentStatus     String   @default("pending") // "pending", "processing", "completed", "failed"
-  paymentId         String?  // Stripe payment ID
-  paymentMethod     String?  // "stripe", "paypal"
-  paymentIntentId   String?  // Stripe payment intent
+  paymentId         String?  // Payment session/transaction ID
+  paymentMethod     String?  // "payoneer", "stripe", "paypal"
+  paymentIntentId   String?  // Payment intent or session ID
+  transactionId     String?  // Final transaction ID from payment gateway
+  paymentDate       DateTime? // Date when payment was completed
   
   // Application Processing
   submissionDate    DateTime?
@@ -115,3 +117,4 @@ model Admin {
   
   @@map("admins")
 }
+

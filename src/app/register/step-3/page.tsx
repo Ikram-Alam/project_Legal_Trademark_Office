@@ -8,7 +8,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
-import PayPalButton from "@/components/PayPalButton"
+import PayoneerButton from "@/components/PayoneerButton"
 import { 
   ArrowLeft, 
   Check, 
@@ -554,10 +554,10 @@ export default function Step3Page() {
                   )}
                 </div>
 
-                {/* PayPal Payment Integration */}
+                {/* Payoneer Payment Integration */}
                 {acceptTerms && acceptPrivacy ? (
                   <div className="space-y-4">
-                    <PayPalButton
+                    <PayoneerButton
                       amount={calculateTotal()}
                       applicationId={localStorage.getItem('applicationId') || ''}
                       packageType={selectedPkg?.name || selectedPackage}
@@ -590,7 +590,7 @@ export default function Step3Page() {
                         <div>
                           <h4 className="font-semibold text-blue-800">Development Mode</h4>
                           <p className="text-sm text-blue-700 mt-1">
-                            This demonstrates the complete payment flow. To process real payments, configure PayPal credentials in your environment variables.
+                            This demonstrates the complete payment flow. To process real payments, configure Payoneer credentials in your environment variables.
                           </p>
                         </div>
                       </div>
