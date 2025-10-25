@@ -816,7 +816,7 @@ export default function Step3Page() {
                     className="w-full border-orange-200 text-orange-700 hover:bg-orange-100"
                   >
                     <Phone className="w-4 h-4 mr-2" />
-                    Call: 1-800-TRADEMARK
+                    Call: (806) 302-1211
                   </Button>
                   <Button 
                     variant="outline" 
@@ -850,7 +850,7 @@ export default function Step3Page() {
               <div className="flex items-center space-x-4">
                 <div className="text-center">
                   <div className="text-sm text-gray-600">Questions? Call us:</div>
-                  <div className="text-lg font-semibold text-blue-600">1-800-TRADEMARK</div>
+                  <div className="text-lg font-semibold text-blue-600">(806) 302-1211</div>
                 </div>
               </div>
             </div>

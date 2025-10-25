@@ -353,7 +353,7 @@ export default function SuccessPage() {
                       <Phone className="w-5 h-5 text-green-600 mr-3" />
                       <div>
                         <div className="font-medium text-gray-800">Phone Support</div>
-                        <div className="text-sm text-gray-600">Call us anytime at 1-800-TRADEMARK</div>
+                        <div className="text-sm text-gray-600">Call us anytime at (806) 302-1211</div>
                       </div>
                     </div>
                   </div>

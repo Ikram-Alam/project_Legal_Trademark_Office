@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import {
   DropdownMenu,
@@ -9,7 +10,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { ChevronDown, Menu, X, Shield, Zap, Phone } from "lucide-react"
+import { ChevronDown, Menu, X, Zap, Phone } from "lucide-react"
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
@@ -18,18 +19,30 @@ export default function Navbar() {
     <nav className="bg-gradient-to-r from-white via-blue-50 to-white shadow-xl fixed w-full top-0 z-50 border-b border-blue-100/50 backdrop-blur-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
-          {/* Enhanced Logo */}
+          {/* Enhanced Logo with USPTO Image */}
           <div className="flex-shrink-0">
-            <Link href="/" className="group flex items-center space-x-3">
-              <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center transform group-hover:scale-110 transition-all duration-300 shadow-lg">
-                <Shield className="w-6 h-6 text-white" />
+            <Link href="/" className="group flex items-center space-x-2 sm:space-x-3">
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12 transform group-hover:scale-110 transition-all duration-300">
+                <Image
+                  src="/uspto1.png"
+                  alt="Legal Trademark Office Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
-              <div>
-                <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+              <div className="hidden sm:block">
+                <div className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
                   Legal Trademark Office
                 </div>
                 <div className="text-xs text-blue-500 font-medium">
                   Protecting Your Brand Since 2010
+                </div>
+              </div>
+              {/* Mobile: Show abbreviated name */}
+              <div className="sm:hidden">
+                <div className="text-sm font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                  USPTO
                 </div>
               </div>
             </Link>
@@ -101,12 +114,12 @@ export default function Navbar() {
 
           {/* Enhanced CTA Button */}
           <div className="hidden md:flex items-center space-x-4">
-            <Link href="/contact" className="text-sm text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center">
+            <Link href="/contact" className="text-sm text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center whitespace-nowrap">
               <Phone className="w-4 h-4 mr-1" />
-              (555) 123-4567
+              (806) 302-1211
             </Link>
             <Link href="/register">
-              <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2.5 rounded-full font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl">
+              <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2.5 rounded-full font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl whitespace-nowrap">
                 <Zap className="w-4 h-4 mr-2" />
                 Register Now
               </Button>
@@ -114,10 +127,11 @@ export default function Navbar() {
           </div>
 
           {/* Enhanced Mobile menu button */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center">
             <button
               onClick={() => setIsOpen(!isOpen)}
               className="text-gray-700 hover:text-blue-600 p-2 rounded-lg hover:bg-blue-50 transition-all duration-300"
+              aria-label="Toggle menu"
             >
               {isOpen ? (
                 <X className="h-6 w-6 transform rotate-180 transition-transform duration-300" />
@@ -199,7 +213,7 @@ export default function Navbar() {
               <div className="pt-4 space-y-3">
                 <div className="flex items-center justify-center text-sm text-gray-600 bg-blue-50 py-2 px-4 rounded-lg">
                   <Phone className="w-4 h-4 mr-2 text-blue-500" />
-                  Call us: (555) 123-4567
+                  Call us: (806) 302-1211
                 </div>
                 <Link href="/register" onClick={() => setIsOpen(false)} className="block">
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 rounded-lg font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg">

@@ -47,7 +47,7 @@ export default function Footer() {
                   <div>
                     <p className="text-gray-400 text-sm">Call Now for a Free Consultation:</p>
                     <p className="text-blue-400 text-lg font-semibold hover:text-blue-300 transition-colors cursor-pointer">
-                      +1 (310) 424-4909
+                      (806) 302-1211
                     </p>
                   </div>
                 </div>
@@ -69,7 +69,7 @@ export default function Footer() {
                   <div>
                     <p className="text-gray-400 text-sm">Email Us:</p>
                     <p className="text-blue-400 hover:text-blue-300 transition-colors cursor-pointer">
-                      info@legaltrademarkoffice.com
+                      usptolegaltrademarkoffice@gmail.com
                     </p>
                   </div>
                 </div>

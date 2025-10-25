@@ -432,7 +432,7 @@ export default function TrademarkRevivalPage() {
                 </Link>
                 <Button size="lg" variant="outline" className="border-2 border-orange-600 text-orange-700 hover:bg-orange-100 px-8 py-4 rounded-full font-bold text-lg transform hover:scale-105 transition-all duration-300 shadow-lg">
                   <Timer className="mr-2 w-5 h-5" />
-                  Call (555) 123-4567
+                  Call (806) 302-1211
                 </Button>
               </div>
               

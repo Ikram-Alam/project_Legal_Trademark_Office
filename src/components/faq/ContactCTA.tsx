@@ -7,7 +7,7 @@ const contactMethods = [
   {
     icon: Phone,
     title: "Call Us",
-    detail: "(555) 123-4567",
+    detail: "(806) 302-1211",
     action: "Call Now"
   },
   {
@@ -19,7 +19,7 @@ const contactMethods = [
   {
     icon: Mail,
     title: "Email Us",
-    detail: "hello@trademarkoffice.com",
+    detail: "usptolegaltrademarkoffice@gmail.com",
     action: "Send Email"
   }
 ]
