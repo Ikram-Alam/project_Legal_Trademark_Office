@@ -62,7 +62,7 @@ export default function Navbar() {
               {/* Enhanced Services Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger className="text-gray-700 hover:text-blue-600 px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg hover:bg-blue-50 flex items-center group relative">
-                  Our Services
+                  Services
                   <ChevronDown className="ml-1 h-4 w-4 group-hover:rotate-180 transition-transform duration-300" />
                   <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
                 </DropdownMenuTrigger>
@@ -92,14 +92,14 @@ export default function Navbar() {
                 href="/about"
                 className="text-gray-700 hover:text-blue-600 px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg hover:bg-blue-50 relative group"
               >
-                About Us
+                About
                 <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
               <Link
                 href="/contact"
                 className="text-gray-700 hover:text-blue-600 px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg hover:bg-blue-50 relative group"
               >
-                Contact Us
+                Contact
                 <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
               <Link
@@ -107,6 +107,13 @@ export default function Navbar() {
                 className="text-gray-700 hover:text-blue-600 px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg hover:bg-blue-50 relative group"
               >
                 FAQ
+                <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
+              </Link>
+              <Link
+                href="/privacy-policy"
+                className="text-gray-700 hover:text-blue-600 px-4 py-2 text-sm font-semibold transition-all duration-300 rounded-lg hover:bg-blue-50 relative group"
+              >
+                Privacy Policy
                 <span className="absolute bottom-0 left-1/2 w-0 h-0.5 bg-gradient-to-r from-blue-600 to-indigo-600 group-hover:w-full group-hover:left-0 transition-all duration-300"></span>
               </Link>
             </div>
@@ -207,6 +214,13 @@ export default function Navbar() {
                 onClick={() => setIsOpen(false)}
               >
                 FAQ
+              </Link>
+              <Link
+                href="/privacy-policy"
+                className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 block px-4 py-3 text-base font-semibold rounded-lg transition-all duration-300"
+                onClick={() => setIsOpen(false)}
+              >
+                Privacy Policy
               </Link>
               
               {/* Mobile Contact & CTA */}

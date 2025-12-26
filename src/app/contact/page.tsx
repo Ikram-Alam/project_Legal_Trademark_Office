@@ -22,7 +22,8 @@ export default function ContactPage() {
     phone: "",
     subject: "",
     message: "",
-    inquiryType: "general"
+    inquiryType: "general",
+    smsConsent: false
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
 
@@ -44,13 +45,14 @@ export default function ContactPage() {
         phone: "",
         subject: "",
         message: "",
-        inquiryType: "general"
+        inquiryType: "general",
+        smsConsent: false
       })
     }, 3000)
   }
 
   const isFormValid = () => {
-    return formData.name && formData.email && formData.subject && formData.message
+    return formData.name && formData.email && formData.subject && formData.message && formData.smsConsent
   }
 
   return (
@@ -278,6 +280,19 @@ export default function ContactPage() {
                           onChange={(e) => handleInputChange('message', e.target.value)}
                           className="mt-2 h-32 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                         />
+                      </div>
+
+                      <div className="flex items-start space-x-3 bg-blue-50 border border-blue-200 rounded-lg p-4">
+                        <input
+                          type="checkbox"
+                          id="smsConsent"
+                          checked={formData.smsConsent}
+                          onChange={(e) => setFormData(prev => ({ ...prev, smsConsent: e.target.checked }))}
+                          className="mt-1 w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                        />
+                        <Label htmlFor="smsConsent" className="text-sm text-gray-700 leading-relaxed cursor-pointer">
+                          By providing a telephone number and submitting this form you are consenting to be contacted by SMS text message. Message & data rates may apply. Message frequency may vary. Reply HELP for more information. You can reply STOP to opt-out of further messaging.
+                        </Label>
                       </div>
 
                       <Button 
