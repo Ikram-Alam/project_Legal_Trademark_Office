@@ -128,7 +128,7 @@ export default function ContactPage() {
               {
                 icon: Phone,
                 title: "Call Us",
-                primary: "(806) 302-1211",
+                primary: "806-318-0751",
                 secondary: "Mon-Fri 8AM-8PM EST",
                 color: "from-blue-500 to-cyan-500",
                 bgColor: "blue"
@@ -253,7 +253,7 @@ export default function ContactPage() {
                           <Input
                             id="phone"
                             type="tel"
-                            placeholder="(806) 302-1211"
+                            placeholder="806-318-0751"
                             value={formData.phone}
                             onChange={(e) => handleInputChange('phone', e.target.value)}
                             className="mt-2 border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
@@ -326,7 +326,7 @@ export default function ContactPage() {
                       name: "Headquarters",
                       address: "123 Legal Plaza, Suite 500",
                       city: "New York, NY 10001",
-                      phone: "(806) 302-1211",
+                      phone: "806-318-0751",
                       hours: "Mon-Fri 8AM-8PM EST",
                       color: "from-blue-500 to-cyan-500"
                     },
@@ -334,7 +334,7 @@ export default function ContactPage() {
                       name: "West Coast Office",
                       address: "456 Innovation Drive, Floor 10",
                       city: "San Francisco, CA 94105",
-                      phone: "(806) 302-1211",
+                      phone: "806-318-0751",
                       hours: "Mon-Fri 8AM-6PM PST",
                       color: "from-green-500 to-teal-500"
                     }

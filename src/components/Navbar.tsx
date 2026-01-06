@@ -25,7 +25,7 @@ export default function Navbar() {
               <div className="relative w-10 h-10 sm:w-12 sm:h-12 transform group-hover:scale-110 transition-all duration-300">
                 <Image
                   src="/uspto1.png"
-                  alt="Legal Trademark Office Logo"
+                  alt="USPTO Legal Trademark Office Logo"
                   fill
                   className="object-contain"
                   priority
@@ -33,7 +33,7 @@ export default function Navbar() {
               </div>
               <div className="hidden sm:block">
                 <div className="text-lg sm:text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-                  Legal Trademark Office
+                  USPTO Legal Trademark Office
                 </div>
                 <div className="text-xs text-blue-500 font-medium">
                   Protecting Your Brand Since 2010
@@ -123,7 +123,7 @@ export default function Navbar() {
           <div className="hidden md:flex items-center space-x-4">
             <Link href="/contact" className="text-sm text-gray-600 hover:text-blue-600 transition-colors duration-300 flex items-center whitespace-nowrap">
               <Phone className="w-4 h-4 mr-1" />
-              (806) 302-1211
+              806-318-0751
             </Link>
             <Link href="/register">
               <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-2.5 rounded-full font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-xl whitespace-nowrap">
@@ -227,7 +227,7 @@ export default function Navbar() {
               <div className="pt-4 space-y-3">
                 <div className="flex items-center justify-center text-sm text-gray-600 bg-blue-50 py-2 px-4 rounded-lg">
                   <Phone className="w-4 h-4 mr-2 text-blue-500" />
-                  Call us: (806) 302-1211
+                  Call us: 806-318-0751
                 </div>
                 <Link href="/register" onClick={() => setIsOpen(false)} className="block">
                   <Button className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white py-3 rounded-lg font-semibold transform hover:scale-105 transition-all duration-300 shadow-lg">

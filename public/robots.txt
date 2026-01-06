@@ -1,4 +1,4 @@
-# Legal Trademark Office - Robots.txt
+# USPTO Legal Trademark Office - Robots.txt
 
 User-agent: *
 Allow: /

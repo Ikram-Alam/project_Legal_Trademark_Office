@@ -85,9 +85,9 @@ export default function NotFound() {
         <div className="mt-8 text-gray-600">
           <p className="mb-2">Need immediate assistance?</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <a href="tel:+18063021211" className="flex items-center hover:text-blue-600 transition-colors duration-300">
+            <a href="tel:+18063180751" className="flex items-center hover:text-blue-600 transition-colors duration-300">
               <Phone className="w-4 h-4 mr-2" />
-              (806) 302-1211
+              806-318-0751
             </a>
             <span className="hidden sm:inline">•</span>
             <a href="mailto:usptolegaltrademarkoffice@gmail.com" className="flex items-center hover:text-blue-600 transition-colors duration-300">

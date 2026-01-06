@@ -7,7 +7,7 @@ const contactMethods = [
   {
     icon: Phone,
     title: "Call Us",
-    detail: "(806) 302-1211",
+    detail: "806-318-0751",
     action: "Call Now"
   },
   {

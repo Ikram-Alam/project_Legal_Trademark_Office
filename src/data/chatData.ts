@@ -213,9 +213,9 @@ export const chatData: ChatDataEntry[] = [
     category: "support",
     keywords: ["support", "help", "contact", "assistance", "question", "speak", "talk", "customer service"],
     responses: [
-      "We're here to help! 24/7\n\n📧 Email: usptolegaltrademarkoffice@gmail.com\n📞 Phone: (806) 302-1211\n💬 Live Chat: Right here!\n⏱️ Response time: Within 2 hours\n\nOur Professional package includes priority support with even faster response times!",
+      "We're here to help! 24/7\n\n📧 Email: usptolegaltrademarkoffice@gmail.com\n📞 Phone: 806-318-0751\n💬 Live Chat: Right here!\n⏱️ Response time: Within 2 hours\n\nOur Professional package includes priority support with even faster response times!",
       "Need human assistance? We offer:\n• Email support (all packages)\n• Phone support (24/7)\n• Priority support (Professional/Enterprise)\n• Dedicated account manager (Enterprise)\n\nJust ask - we're always here!",
-      "Get help anytime:\n✓ Chat with me for instant answers\n✓ Email us at usptolegaltrademarkoffice@gmail.com\n✓ Call (806) 302-1211\n✓ Schedule a free consultation\n\nAverage response time: 2 hours!"
+      "Get help anytime:\n✓ Chat with me for instant answers\n✓ Email us at usptolegaltrademarkoffice@gmail.com\n✓ Call 806-318-0751\n✓ Schedule a free consultation\n\nAverage response time: 2 hours!"
     ]
   },
 
@@ -286,7 +286,7 @@ export const chatData: ChatDataEntry[] = [
     category: "technical_help",
     keywords: ["website issue", "can't submit", "error", "not working", "broken", "bug"],
     responses: [
-      "Sorry for the trouble! Try these quick fixes:\n1. Refresh the page (Ctrl+R / Cmd+R)\n2. Clear browser cache\n3. Try a different browser\n4. Check your internet connection\n\nStill stuck? Contact us immediately:\n📧 usptolegaltrademarkoffice@gmail.com\n📞 (806) 302-1211\n\nWe'll get you sorted out!",
+      "Sorry for the trouble! Try these quick fixes:\n1. Refresh the page (Ctrl+R / Cmd+R)\n2. Clear browser cache\n3. Try a different browser\n4. Check your internet connection\n\nStill stuck? Contact us immediately:\n📧 usptolegaltrademarkoffice@gmail.com\n📞 806-318-0751\n\nWe'll get you sorted out!",
       "Technical issues? Let's fix it:\n• Try clearing your browser cache\n• Disable ad blockers temporarily\n• Use Chrome or Firefox\n• Check if JavaScript is enabled\n\nIf problems persist, email us at usptolegaltrademarkoffice@gmail.com with details and we'll help right away!"
     ]
   },

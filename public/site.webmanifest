@@ -1,6 +1,6 @@
 {
-  "name": "Legal Trademark Office",
-  "short_name": "LTO",
+  "name": "USPTO Legal Trademark Office",
+  "short_name": "USPTO LTO",
   "description": "Professional trademark registration, renewal, and revival services",
   "start_url": "/",
   "display": "standalone",

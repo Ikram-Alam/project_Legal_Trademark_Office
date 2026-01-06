@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Legal Trademark Office - Secure Your Brand Identity | Trademark Registration Services",
-    template: "%s | Legal Trademark Office"
+    default: "USPTO Legal Trademark Office - Secure Your Brand Identity | Trademark Registration Services",
+    template: "%s | USPTO Legal Trademark Office"
   },
   description: "Professional trademark registration, renewal, and revival services. Protect your brand with our expert legal team. Starting at just $49 + USPTO fees. 15+ years experience, 200,000+ trademarks filed.",
   keywords: [
@@ -42,9 +42,9 @@ export const metadata: Metadata = {
     "trademark fees",
     "federal trademark"
   ],
-  authors: [{ name: "Legal Trademark Office" }],
-  creator: "Legal Trademark Office",
-  publisher: "Legal Trademark Office",
+  authors: [{ name: "USPTO Legal Trademark Office" }],
+  creator: "USPTO Legal Trademark Office",
+  publisher: "USPTO Legal Trademark Office",
   robots: {
     index: true,
     follow: true,
@@ -60,15 +60,15 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://legaltrademarkoffice.com",
-    siteName: "Legal Trademark Office",
-    title: "Legal Trademark Office - Secure Your Brand Identity",
+    siteName: "USPTO Legal Trademark Office",
+    title: "USPTO Legal Trademark Office - Secure Your Brand Identity",
     description: "Professional trademark registration, renewal, and revival services. Protect your brand with our expert legal team. Starting at just $49 + USPTO fees.",
     images: [
       {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Legal Trademark Office - Trademark Registration Services",
+        alt: "USPTO Legal Trademark Office - Trademark Registration Services",
       },
     ],
   },
@@ -76,11 +76,11 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     site: "@LegalTrademarkOffice",
     creator: "@LegalTrademarkOffice",
-    title: "Legal Trademark Office - Secure Your Brand Identity",
+    title: "USPTO Legal Trademark Office - Secure Your Brand Identity",
     description: "Professional trademark registration, renewal, and revival services. Starting at just $49 + USPTO fees.",
     images: ["/twitter-image.jpg"],
   },
-  applicationName: "Legal Trademark Office",
+  applicationName: "USPTO Legal Trademark Office",
   manifest: "/site.webmanifest",
   alternates: {
     canonical: "https://legaltrademarkoffice.com",

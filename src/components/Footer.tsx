@@ -23,7 +23,7 @@ export default function Footer() {
                 </div>
                 <div>
                   <div className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-                    Legal Trademark Office
+                    USPTO Legal Trademark Office
                   </div>
                   <div className="text-blue-300 text-sm font-medium">
                     Your Trusted IP Protection Partner
@@ -34,7 +34,7 @@ export default function Footer() {
             
             <div className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10 mb-6">
               <p className="text-gray-300 mb-6 leading-relaxed">
-                Secure your brand&apos;s future with Legal Trademark Office tailored protection 
+                Secure your brand&apos;s future with USPTO Legal Trademark Office tailored protection 
                 packages. Choose our DIY assisted service for a hands-on approach, or enlist 
                 our expert attorneys to handle your trademark filing with precision and care.
               </p>
@@ -47,7 +47,7 @@ export default function Footer() {
                   <div>
                     <p className="text-gray-400 text-sm">Call Now for a Free Consultation:</p>
                     <p className="text-blue-400 text-lg font-semibold hover:text-blue-300 transition-colors cursor-pointer">
-                      (806) 302-1211
+                      806-318-0751
                     </p>
                   </div>
                 </div>
@@ -238,7 +238,7 @@ export default function Footer() {
                 <p className="text-gray-300 text-sm">
                   © Copyright & all rights reserved by{' '}
                   <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent font-semibold">
-                    Legal Trademark Office
+                    USPTO Legal Trademark Office
                   </span>{' '}
                   2025
                 </p>

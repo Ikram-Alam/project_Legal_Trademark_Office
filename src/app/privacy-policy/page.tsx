@@ -151,6 +151,11 @@ export default function PrivacyPolicyPage() {
                   </div>
                 </div>
 
+                <h2 className="text-2xl font-bold text-gray-900 mb-4 mt-8">SMS and Phone Communication</h2>
+                <p className="text-gray-700 leading-relaxed mb-6">
+                  We do not sell, rent, or share phone numbers or SMS opt-in consent with third parties, affiliates, or partners. SMS consent is used only for transactional and informational communications.
+                </p>
+
                 <h2 className="text-2xl font-bold text-gray-900 mb-4 mt-8">Change History</h2>
                 <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-8">
                   <li>Changed Blog comments section to Comments and updated text about electronic comments</li>
